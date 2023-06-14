@@ -1,5 +1,4 @@
 fastapi==0.97.0
-python
 tensorflow-cpu
 python-multipart
 uvicorn
