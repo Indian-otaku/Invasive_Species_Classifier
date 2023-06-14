@@ -1,4 +1,4 @@
-python==3.11.*
+python
 fastapi==0.97.0
 tensorflow-cpu
 python-multipart
