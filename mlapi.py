@@ -1,14 +1,10 @@
 from fastapi import FastAPI, File, UploadFile
-import uvicorn
+import os
 import tensorflow as tf
-from PIL import Image
-import io
 
-app = FastAPI(title="ECOAWARE")
+# import uvicorn
 
-model_path = (
-    r"C:\Users\zuraj\Downloads\MiniProjectNew\Programs\Saved models\model1_2.h5"
-)
+model_path = os.path.join(os.getcwd(), r"model1_2.h5")
 model = tf.keras.models.load_model(model_path)
 
 plant_names = [
@@ -30,10 +26,12 @@ plant_names = [
     "Pontederia crassipes",
 ]
 
+app = FastAPI(title="EcoAware")
+
 
 @app.get("/")
 def home():
-    return "Welcome to the site!"
+    return "Welcome to EcoAware!"
 
 
 @app.post("/api/predict")
@@ -46,8 +44,13 @@ async def predict_from_image(file: UploadFile = File(...)):
     image = tf.reshape(tf.constant(image), (1, 256, 256, 3))
     prediction = model.predict(image)
     pred_label = tf.argmax(prediction[0]).numpy()
-    return "Prediction is " + plant_names[pred_label]
+    print(plant_names[pred_label])
+    print(prediction[0][pred_label])
+    return {
+        "Prediction": plant_names[pred_label],
+        "Confidence": round(float(prediction[0][pred_label]), 2),
+    }
 
 
-if __name__ == "__main__":
-    uvicorn.run(app=app, host="127.0.0.1", port=8000)
+# if __name__ == "__main__":
+#     uvicorn.run(app=app, host="127.0.0.1", port=8000)
