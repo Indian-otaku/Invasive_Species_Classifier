@@ -1,8 +1,8 @@
 from fastapi import FastAPI, File, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 import os
 import tensorflow as tf
-
-# import uvicorn
+import uvicorn
 
 model_path = os.path.join(os.getcwd(), r"model1_2.h5")
 model = tf.keras.models.load_model(model_path, compile=False)
@@ -28,6 +28,18 @@ plant_names = [
 
 app = FastAPI(title="EcoAware")
 
+origins = ["*"]
+methods = ["*"]
+headers = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=methods,
+    allow_headers=headers,
+)
+
 
 @app.get("/")
 def home():
@@ -52,5 +64,5 @@ async def predict_from_image(file: UploadFile = File(...)):
     }
 
 
-# if __name__ == "__main__":
-#     uvicorn.run(app=app, host="127.0.0.1", port=8000)
+if __name__ == "__main__":
+    uvicorn.run(app=app, host="127.0.0.1", port=8000)
