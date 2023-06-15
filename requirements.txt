@@ -1,5 +1,5 @@
-fastapi==0.97.0
-tensorflow-cpu
+fastapi>=0.70.0
+tensorflow>=2.5.0
 python-multipart
-uvicorn
+uvicorn>=0.15.0
 image

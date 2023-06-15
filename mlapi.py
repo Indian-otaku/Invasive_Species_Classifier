@@ -56,8 +56,6 @@ async def predict_from_image(file: UploadFile = File(...)):
     image = tf.reshape(tf.constant(image), (1, 256, 256, 3))
     prediction = model.predict(image)
     pred_label = tf.argmax(prediction[0]).numpy()
-    print(plant_names[pred_label])
-    print(prediction[0][pred_label])
     return {
         "Prediction": plant_names[pred_label],
         "Confidence": round(float(prediction[0][pred_label]), 2),
@@ -65,4 +63,4 @@ async def predict_from_image(file: UploadFile = File(...)):
 
 
 if __name__ == "__main__":
-    uvicorn.run(app=app, host="127.0.0.1", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 8000)))
