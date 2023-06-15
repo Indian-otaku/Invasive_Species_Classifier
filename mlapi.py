@@ -4,7 +4,7 @@ import os
 import tensorflow as tf
 import uvicorn
 
-model_path = os.path.join(os.getcwd(), r"model1_2.h5")
+model_path = os.path.join(os.getcwd(), r"model1.h5")
 model = tf.keras.models.load_model(model_path, compile=False)
 
 plant_names = [
